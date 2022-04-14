@@ -5,17 +5,17 @@ import 'package:flutter/services.dart';
 
 import 'article.dart';
 
-class BookmarkScreen extends StatefulWidget {
+class SpeechScreen extends StatefulWidget {
 
-  const BookmarkScreen({
+  const SpeechScreen({
     Key? key,
   }) : super(key: key);
   
   @override
-  _BookmarkScreenState createState() => _BookmarkScreenState();
+  _SpeechScreenState createState() => _SpeechScreenState();
 }
 
-class _BookmarkScreenState extends State<BookmarkScreen> {
+class _SpeechScreenState extends State<SpeechScreen> {
   List _items = [];
 
   void loadJson() async {
@@ -56,7 +56,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('お気に入り'),
+        title: const Text('議会発言一覧'),
         toolbarHeight: 40,
       ),
       body: ListView.builder(

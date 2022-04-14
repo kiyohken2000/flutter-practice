@@ -40,6 +40,12 @@ class GaleryScreen extends StatelessWidget {
       _imageItem("31"),
       _imageItem("32"),
       _imageItem("33"),
+      _imageItem("34"),
+      _imageItem("35"),
+      _imageItem("36"),
+      _imageItem("37"),
+      _imageItem("38"),
+      _imageItem("39"),
     ];
 
     return Scaffold(

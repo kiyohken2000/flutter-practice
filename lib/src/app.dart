@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'screens/account.dart';
-import 'screens/bookmark.dart';
+import 'screens/speech.dart';
 import 'screens/home.dart';
 import 'screens/galery.dart';
 
@@ -30,7 +30,7 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static const _screens = [
     HomeScreen(title: 'home'),
-    BookmarkScreen(),
+    SpeechScreen(),
     GaleryScreen(),
     AccountScreen()
   ];
@@ -52,8 +52,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           onTap: _onItemTapped,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'ホーム'),
-            BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'お気に入り'),
-            BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'ギャラリー'),
+            BottomNavigationBarItem(icon: Icon(Icons.favorite), label: '発言'),
+            BottomNavigationBarItem(icon: Icon(Icons.image_aspect_ratio), label: 'ギャラリー'),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'アカウント'),
           ],
           type: BottomNavigationBarType.fixed,

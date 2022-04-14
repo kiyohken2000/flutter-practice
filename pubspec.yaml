@@ -38,6 +38,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.4
   convert: ^3.0.1
+  speech_to_text: ^5.4.3
+  flutter_tts: ^3.3.3
 
 dev_dependencies:
   flutter_test:

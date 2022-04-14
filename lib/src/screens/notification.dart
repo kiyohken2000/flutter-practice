@@ -11,7 +11,9 @@ class NotificationScreen extends StatelessWidget {
         toolbarHeight: 40,
       ),
       body:
-          const Center(child: Text('お知らせ画面', style: TextStyle(fontSize: 32.0))),
+          const Center(
+            child: Image(image: AssetImage('assets/images/avatar.jpg'))
+          ),
     );
   }
 }

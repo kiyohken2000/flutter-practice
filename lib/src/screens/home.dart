@@ -1,63 +1,82 @@
 import 'package:flutter/material.dart';
+import 'detail.dart';
 
-class HomeScreen extends StatefulWidget {  
-
-  //　変数定義すると、UIのところから"widget.変数名" で呼ぶことができる。
+class HomeScreen extends StatefulWidget {
   final String title;
 
   const HomeScreen({
     Key? key,
     required this.title,
   }) : super(key: key);
-  
-   // createState()　で"State"（Stateを継承したクラス）を返す
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _counter = 0;
-  
-  // providerのモデルで定義していたmethodをここかく。
-  void _incrementCounter() {
-    // 変更したらUIも変わる操作をsetStateで包む。
-    //(providerのchangeNotifier()みたいな役割)　
-    setState(() {
-      _counter++;
-    });
-  }
 
-  //　状態を使いつつ組んだWidgetを返す(build関数)    
+  void sayHello(String name) {
+    debugPrint("Hello! $name");
+  }
+  
   @override
   Widget build(BuildContext context) {
-    // 　UIの部分はここに書く。　
     return Scaffold(
       appBar: AppBar(
-        // このように自分(State)をcreateStateしたWidget(StatefulWidget)
-        // のフィールドにアクセスできる。
-        title: Text(widget.title),
+        title: const Text('ホーム'),
+        toolbarHeight: 40,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'You have pushed the button this many times:',
+      body: SizedBox(
+        width: double.infinity,
+        child: ListView(
+          children: <Widget>[
+            ListTile(
+              leading: const Icon(Icons.map),
+              title: const Text('Map'),
+              onTap: () {
+                sayHello('map');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:(context) {
+                      return DetailScreen(title: '詳細', myname: 'map');
+                    },
+                  ),
+                );
+              },
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            ListTile(
+              leading: const Icon(Icons.photo_album),
+              title: const Text('Album'),
+              onTap: () {
+                sayHello('album');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:(context) {
+                      return DetailScreen(title: '詳細', myname: 'album!');
+                    },
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.phone),
+              title: const Text('Phone'),
+              onTap: () {
+                sayHello('phone');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:(context) {
+                      return DetailScreen(title: '詳細', myname: 'phone!!!');
+                    },
+                  ),
+                );
+              },
             ),
           ],
         ),
-      ),
-
-      // ボタン操作に応じて_counterを増やす
-      floatingActionButton: FloatingActionButton(
-        // onPressedされると、_counter++され、setState()によってUIが再描画される。
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }

@@ -29,7 +29,7 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static const _screens = [
-    HomeScreen(title: 'home',),
+    HomeScreen(title: 'home'),
     BookmarkScreen(),
     NotificationScreen(),
     AccountScreen()

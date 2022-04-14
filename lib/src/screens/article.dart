@@ -56,7 +56,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
       body: Padding(
         padding: EdgeInsets.only(left: 10, right: 10),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.only(bottom: 80),
+          padding: const EdgeInsets.only(bottom: 110),
           child: Column(
             children: [
               Padding(

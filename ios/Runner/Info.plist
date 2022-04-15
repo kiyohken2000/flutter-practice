@@ -20,6 +20,10 @@
 	<string>安倍晋三エクスプローラー</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>音声読み上げのためにマイクを使用します</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>音声読み上げのためにマイクを使用します</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>

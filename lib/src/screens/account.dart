@@ -1,5 +1,43 @@
 import 'package:flutter/material.dart';
 
+class InquiryAlertDialog extends StatelessWidget {
+  const InquiryAlertDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('意味のない質問だよ'),
+      actions: <Widget>[
+        GestureDetector(
+          child: Text('閉じる'),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class ReportAlertDialog extends StatelessWidget {
+  const ReportAlertDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('だから、すみませんって言ってるじゃないか！！'),
+      actions: <Widget>[
+        GestureDetector(
+          child: Text('閉じる'),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    );
+  }
+}
+
 class AccountScreen extends StatelessWidget {
   const AccountScreen({Key? key}) : super(key: key);
 
@@ -29,6 +67,23 @@ class AccountScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          showDialog<void>(
+                          context: context,
+                          builder: (_) {
+                            return InquiryAlertDialog();
+                          });
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Colors.red.shade300,
+                          minRadius: 35.0,
+                          child: Icon(
+                            Icons.message,
+                            size: 30.0,
+                          ),
+                        ),
+                      ),
                       CircleAvatar(
                         backgroundColor: Colors.white70,
                         minRadius: 60.0,
@@ -36,6 +91,23 @@ class AccountScreen extends StatelessWidget {
                           radius: 50.0,
                           backgroundImage:
                               NetworkImage('https://i.imgur.com/ZGcj92d.jpg'),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog<void>(
+                          context: context,
+                          builder: (_) {
+                            return ReportAlertDialog();
+                          });
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Colors.red.shade300,
+                          minRadius: 35.0,
+                          child: Icon(
+                            Icons.flag,
+                            size: 30.0,
+                          ),
                         ),
                       ),
                     ],
@@ -69,7 +141,7 @@ class AccountScreen extends StatelessWidget {
                       color: Colors.deepOrange.shade300,
                       child: ListTile(
                         title: Text(
-                          '聖帝',
+                          '担当',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -78,7 +150,7 @@ class AccountScreen extends StatelessWidget {
                           ),
                         ),
                         subtitle: Text(
-                          'The Seitei',
+                          'Tantou',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 20,
@@ -93,7 +165,7 @@ class AccountScreen extends StatelessWidget {
                       color: Colors.red,
                       child: ListTile(
                         title: Text(
-                          '総理大臣',
+                          '森羅万象',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -102,7 +174,7 @@ class AccountScreen extends StatelessWidget {
                           ),
                         ),
                         subtitle: Text(
-                          'The Souridaijin',
+                          'Shinrabanshou',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 20,
@@ -154,7 +226,7 @@ class AccountScreen extends StatelessWidget {
                   Divider(),
                   ListTile(
                     title: Text(
-                      '生年月日',
+                      '担当',
                       style: TextStyle(
                         color: Colors.deepOrange,
                         fontSize: 20,
@@ -162,7 +234,7 @@ class AccountScreen extends StatelessWidget {
                       ),
                     ),
                     subtitle: Text(
-                      '1954年9月21日',
+                      '森羅万象',
                       style: TextStyle(
                         fontSize: 18,
                       ),

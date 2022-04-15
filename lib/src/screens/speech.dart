@@ -65,9 +65,8 @@ class _SpeechScreenState extends State<SpeechScreen> {
           return Card(
             margin: const EdgeInsets.all(10),
             child: ListTile(
-              leading: Text(_items[index]["Date"]),
-              title: Text(_items[index]["Speaker"]),
-              subtitle: Text(_items[index]["SpeakerYomi"]),
+              title: Text(_items[index]["Speech"], maxLines: 1,),
+              subtitle: Text(_items[index]["Date"]),
               onTap: () => {onPress(_items[index])},
             ),
           );

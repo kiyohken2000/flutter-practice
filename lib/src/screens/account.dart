@@ -90,7 +90,7 @@ class AccountScreen extends StatelessWidget {
                         child: CircleAvatar(
                           radius: 50.0,
                           backgroundImage:
-                              NetworkImage('https://i.imgur.com/ZGcj92d.jpg'),
+                              NetworkImage('https://kiyohken2000.web.fc2.com/abeshinzo/33.jpg'),
                         ),
                       ),
                       GestureDetector(

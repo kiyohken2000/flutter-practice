@@ -21,7 +21,7 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
         title: Text('写真'),
         toolbarHeight: 40,
       ),
-      body: Center(child: Image.asset(widget.image)),
+      body: Center(child: Image.network(widget.image)),
     );
   }
 }

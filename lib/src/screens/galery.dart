@@ -63,9 +63,9 @@ class GaleryScreen extends StatelessWidget {
           itemCount: imageList.length,
           itemBuilder: (context, index) {
             var imageIndex = index + 1;
-            var image = "assets/images/abeshinzo/" + imageIndex.toString() + ".jpg";
+            var image = "https://kiyohken2000.web.fc2.com/abeshinzo/" + imageIndex.toString() + ".jpg";
             return GestureDetector(
-              child: Image.asset(image, fit: BoxFit.cover,),
+              child: Image.network(image, fit: BoxFit.cover,),
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {

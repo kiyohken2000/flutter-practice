@@ -76,9 +76,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
   # images
-    - assets/images/avatar.jpg
+  #  - assets/images/avatar.jpg
   # images abe shinzo
-    - assets/images/abeshinzo/
+  #  - assets/images/abeshinzo/
   # json
     - assets/json/abeshinzo_from_moritomo.json
     - assets/json/abeshinzo_over_5000.json

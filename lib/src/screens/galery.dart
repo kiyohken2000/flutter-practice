@@ -15,6 +15,7 @@ class GaleryScreen extends StatefulWidget {
 class _GaleryScreenState extends State<GaleryScreen> {
   var galery = <String, dynamic>{};
   int photoCount = 0;
+  String galeryRef = 'appstore';
 
   void loadGalery() async {
     final docRef = FirebaseFirestore.instance.collection('galery').doc('xcpa16TZ6IlV65I2D7KF'); // DocumentReference
@@ -25,6 +26,7 @@ class _GaleryScreenState extends State<GaleryScreen> {
     });
     setState(() {
       photoCount = galery['count'];
+      galeryRef = galery['ref'];
     });
   }
 
@@ -51,7 +53,7 @@ class _GaleryScreenState extends State<GaleryScreen> {
           itemCount: imageList.length,
           itemBuilder: (context, index) {
             var imageIndex = index + 1;
-            var image = "https://kiyohken2000.web.fc2.com/abeshinzo/" + imageIndex.toString() + ".jpg";
+            var image = "https://kiyohken2000.web.fc2.com/" + galeryRef + "/" + imageIndex.toString() + ".jpg";
             return GestureDetector(
               child: Image.network(image, fit: BoxFit.cover,),
               onTap: () {

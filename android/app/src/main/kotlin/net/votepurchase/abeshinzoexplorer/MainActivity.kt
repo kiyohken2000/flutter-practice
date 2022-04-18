@@ -1,4 +1,4 @@
-package net.votepurchase.abeshinzoexplorer
+package net.votepurchase.seiteiexplorer
 
 import io.flutter.embedding.android.FlutterActivity
 

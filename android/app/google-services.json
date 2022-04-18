@@ -29,6 +29,49 @@
             {
               "client_id": "1087667636442-8muqq7vjnfki0sohjsl603l4ieha9rt7.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1087667636442-c9vkg52sj0qc2lu3p80m34g13cg0m3f8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.votepurchase.abeshinzoexplorer"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1087667636442:android:32ed8da82f676ea0eb7de3",
+        "android_client_info": {
+          "package_name": "net.votepurchase.seiteiexplorer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1087667636442-8muqq7vjnfki0sohjsl603l4ieha9rt7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0Hiab_cZ2EsrACuMdoUyiIK9OTqlbHik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1087667636442-8muqq7vjnfki0sohjsl603l4ieha9rt7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1087667636442-c9vkg52sj0qc2lu3p80m34g13cg0m3f8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.votepurchase.abeshinzoexplorer"
+              }
             }
           ]
         }

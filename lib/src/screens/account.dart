@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class InquiryAlertDialog extends StatelessWidget {
   const InquiryAlertDialog({Key? key}) : super(key: key);
@@ -38,8 +40,27 @@ class ReportAlertDialog extends StatelessWidget {
   }
 }
 
-class AccountScreen extends StatelessWidget {
-  const AccountScreen({Key? key}) : super(key: key);
+class AccountScreen extends StatefulWidget {
+
+  const AccountScreen({
+    Key? key,
+  }) : super(key: key);
+  
+  @override
+  _AccountScreenState createState() => _AccountScreenState();
+}
+
+class _AccountScreenState extends State<AccountScreen> {
+
+  void loadPost() async {
+    print('load account screen');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadPost();
+  }
 
   @override
   Widget build(BuildContext context) {

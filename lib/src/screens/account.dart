@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:getwidget/getwidget.dart';
 
 class InquiryAlertDialog extends StatelessWidget {
   const InquiryAlertDialog({Key? key}) : super(key: key);
@@ -40,6 +40,44 @@ class ReportAlertDialog extends StatelessWidget {
   }
 }
 
+class LikeAlertDialog extends StatelessWidget {
+  const LikeAlertDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('非常にジューシー'),
+      actions: <Widget>[
+        GestureDetector(
+          child: Text('閉じる'),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class ThumbUpAlertDialog extends StatelessWidget {
+  const ThumbUpAlertDialog({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('非常にしつこい'),
+      actions: <Widget>[
+        GestureDetector(
+          child: Text('閉じる'),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    );
+  }
+}
+
 class AccountScreen extends StatefulWidget {
 
   const AccountScreen({
@@ -51,9 +89,20 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+  List _postList = [];
 
   void loadPost() async {
-    print('load account screen');
+    final collectionRef = FirebaseFirestore.instance.collection('posts'); // CollectionReference
+    final querySnapshot = await collectionRef.get(); // QuerySnapshot
+    final queryDocSnapshot = querySnapshot.docs; // List<QueryDocumentSnapshot>
+    var array = [];
+    for (final snapshot in queryDocSnapshot) {
+      final data = snapshot.data(); // `data()`で中身を取り出す
+      array.add(data);
+    }
+    setState(() {
+      _postList = array;
+    });
   }
 
   @override
@@ -208,61 +257,77 @@ class _AccountScreenState extends State<AccountScreen> {
                 ],
               ),
             ),
-            Container(
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    title: Text(
-                      'ツイッター',
-                      style: TextStyle(
-                        color: Colors.deepOrange,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Text(
-                      '@AbeShinzo',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                  Divider(),
-                  ListTile(
-                    title: Text(
-                      'ホームページ',
-                      style: TextStyle(
-                        color: Colors.deepOrange,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Text(
-                      'https://www.s-abe.or.jp',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                  Divider(),
-                  ListTile(
-                    title: Text(
-                      '担当',
-                      style: TextStyle(
-                        color: Colors.deepOrange,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Text(
-                      '森羅万象',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ListView.builder(
+                  shrinkWrap: true,   //追加
+                  physics: const NeverScrollableScrollPhysics(),  //追加
+                  itemCount: _postList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: [
+                        ListTile(
+                          leading: GFAvatar(
+                            backgroundImage:NetworkImage("https://kiyohken2000.web.fc2.com/abeshinzo/33.jpg"),
+                          ),
+                          title: Text('安倍晋三'),
+                          subtitle: Text(_postList[index]["post"]),
+                          trailing: IconButton(
+                            icon: Icon(Icons.flag),
+                            onPressed: () {
+                              showDialog<void>(
+                              context: context,
+                              builder: (_) {
+                                return ReportAlertDialog();
+                              });
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20),
+                          child: 
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.message_outlined),
+                                  onPressed: () {
+                                    showDialog<void>(
+                                    context: context,
+                                    builder: (_) {
+                                      return InquiryAlertDialog();
+                                    });
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.thumb_up_alt_outlined),
+                                  onPressed: () {
+                                    showDialog<void>(
+                                    context: context,
+                                    builder: (_) {
+                                      return LikeAlertDialog();
+                                    });
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.favorite_outline),
+                                  onPressed: () {
+                                    showDialog<void>(
+                                    context: context,
+                                    builder: (_) {
+                                      return ThumbUpAlertDialog();
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                        ),
+                        Divider()
+                      ],
+                    );
+                  }),
+                ]
             )
           ],
         ),

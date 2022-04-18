@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1087667636442-c9vkg52sj0qc2lu3p80m34g13cg0m3f8.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1087667636442-c9vkg52sj0qc2lu3p80m34g13cg0m3f8</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCYsJzx1DyH3tOOZklh11UL_SYlvOB_Ijo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1087667636442</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>net.votepurchase.abeshinzoexplorer</string>
+	<key>PROJECT_ID</key>
+	<string>abeshinzoexplorer</string>
+	<key>STORAGE_BUCKET</key>
+	<string>abeshinzoexplorer.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1087667636442:ios:14701d084ea910a8eb7de3</string>
+</dict>
+</plist>

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:flutter/services.dart';
 
 class InquiryAlertDialog extends StatelessWidget {
   const InquiryAlertDialog({Key? key}) : super(key: key);
@@ -126,6 +127,13 @@ class _AccountScreenState extends State<AccountScreen> {
     super.initState();
     loadPost();
     loadGalery();
+  }
+
+  Future<void> _copyToClipboard({toClipboard}) async {
+    await Clipboard.setData(ClipboardData(text: toClipboard));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text('コピーしました'),
+    ));
   }
 
   @override
@@ -311,6 +319,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 IconButton(
                                   icon: Icon(Icons.message_outlined),
                                   onPressed: () {
+                                    _copyToClipboard(toClipboard: _postList[index]["post"]);
                                     showDialog<void>(
                                     context: context,
                                     builder: (_) {
@@ -321,6 +330,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 IconButton(
                                   icon: Icon(Icons.thumb_up_alt_outlined),
                                   onPressed: () {
+                                    _copyToClipboard(toClipboard: _postList[index]["post"]);
                                     showDialog<void>(
                                     context: context,
                                     builder: (_) {
@@ -331,6 +341,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                 IconButton(
                                   icon: Icon(Icons.favorite_outline),
                                   onPressed: () {
+                                    _copyToClipboard(toClipboard: _postList[index]["post"]);
                                     showDialog<void>(
                                     context: context,
                                     builder: (_) {

@@ -59,18 +59,20 @@ class _SpeechScreenState extends State<SpeechScreen> {
         title: const Text('議会発言一覧'),
         toolbarHeight: 40,
       ),
-      body: ListView.builder(
-        itemCount: _items.length,
-        itemBuilder: (context, index) {
-          return Card(
-            margin: const EdgeInsets.all(10),
-            child: ListTile(
-              title: Text(_items[index]["Speech"], maxLines: 1,),
-              subtitle: Text(_items[index]["Date"]),
-              onTap: () => {onPress(_items[index])},
-            ),
-          );
-        },
+      body: Scrollbar(
+        child: ListView.builder(
+          itemCount: _items.length,
+          itemBuilder: (context, index) {
+            return Card(
+              margin: const EdgeInsets.all(10),
+              child: ListTile(
+                title: Text(_items[index]["Speech"], maxLines: 1,),
+                subtitle: Text(_items[index]["Date"]),
+                onTap: () => {onPress(_items[index])},
+              ),
+            );
+          },
+        )
       )
     );
   }

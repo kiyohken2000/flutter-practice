@@ -135,7 +135,8 @@ class _AccountScreenState extends State<AccountScreen> {
         title: const Text('アカウント'),
         toolbarHeight: 40,
       ),
-      body: ListView(
+      body: Scrollbar(
+        child: ListView(
           children: <Widget>[
             Container(
               height: 250,
@@ -348,6 +349,7 @@ class _AccountScreenState extends State<AccountScreen> {
             )
           ],
         ),
+      )
     );
   }
 }

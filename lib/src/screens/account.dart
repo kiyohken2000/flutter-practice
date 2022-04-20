@@ -3,70 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:flutter/services.dart';
 
-class InquiryAlertDialog extends StatelessWidget {
-  const InquiryAlertDialog({Key? key}) : super(key: key);
+class ShowAlertDialog extends StatelessWidget {
+  final String message;
+  const ShowAlertDialog({Key? key, required this.message}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('意味のない質問だよ'),
-      actions: <Widget>[
-        GestureDetector(
-          child: Text('閉じる'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class ReportAlertDialog extends StatelessWidget {
-  const ReportAlertDialog({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('だから、すみませんって言ってるじゃないか！！'),
-      actions: <Widget>[
-        GestureDetector(
-          child: Text('閉じる'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class LikeAlertDialog extends StatelessWidget {
-  const LikeAlertDialog({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('非常にジューシー'),
-      actions: <Widget>[
-        GestureDetector(
-          child: Text('閉じる'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class ThumbUpAlertDialog extends StatelessWidget {
-  const ThumbUpAlertDialog({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('非常にしつこい'),
+      title: Text(message),
       actions: <Widget>[
         GestureDetector(
           child: Text('閉じる'),
@@ -168,14 +112,14 @@ class _AccountScreenState extends State<AccountScreen> {
                           showDialog<void>(
                           context: context,
                           builder: (_) {
-                            return InquiryAlertDialog();
+                            return ShowAlertDialog(message: '意味のない質問だよ');
                           });
                         },
                         child: CircleAvatar(
                           backgroundColor: Colors.red.shade300,
                           minRadius: 35.0,
                           child: Icon(
-                            Icons.message,
+                            Icons.question_answer_outlined,
                             size: 30.0,
                           ),
                         ),
@@ -194,7 +138,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           showDialog<void>(
                           context: context,
                           builder: (_) {
-                            return ReportAlertDialog();
+                            return ShowAlertDialog(message: 'だから、すみませんって言ってるじゃないか！！');
                           });
                         },
                         child: CircleAvatar(
@@ -305,7 +249,7 @@ class _AccountScreenState extends State<AccountScreen> {
                               showDialog<void>(
                               context: context,
                               builder: (_) {
-                                return ReportAlertDialog();
+                                return ShowAlertDialog(message: 'だから、すみませんって言ってるじゃないか！！');
                               });
                             },
                           ),
@@ -323,7 +267,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     showDialog<void>(
                                     context: context,
                                     builder: (_) {
-                                      return InquiryAlertDialog();
+                                      return ShowAlertDialog(message: '意味のない質問だよ');
                                     });
                                   },
                                 ),
@@ -334,7 +278,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     showDialog<void>(
                                     context: context,
                                     builder: (_) {
-                                      return LikeAlertDialog();
+                                      return ShowAlertDialog(message: '非常にジューシー');
                                     });
                                   },
                                 ),
@@ -345,7 +289,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     showDialog<void>(
                                     context: context,
                                     builder: (_) {
-                                      return ThumbUpAlertDialog();
+                                      return ShowAlertDialog(message: '非常にしつこい');
                                     });
                                   },
                                 ),

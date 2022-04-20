@@ -23,6 +23,82 @@ class ShowAlertDialog extends StatelessWidget {
   }
 }
 
+class InquiryDialog extends StatefulWidget {
+  final String message;
+
+  const InquiryDialog({
+    Key? key,
+    required this.message,
+  }) : super(key: key);
+
+  @override
+  _InquiryDialogState createState() => _InquiryDialogState();
+}
+
+class _InquiryDialogState extends State<InquiryDialog> {
+  var _messageController = TextEditingController();
+  String messageValue = '';
+  bool sendEnable = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('早く質問しろよ'),
+      insetPadding: EdgeInsets.all(8),
+      content: TextField(
+        controller: _messageController,
+        decoration: InputDecoration(hintText: "ここに入力"),
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(15)
+        ],
+        onChanged: (String s) { //追加
+          setState(() {
+            messageValue = s;
+          });
+          if(s.length > 1) {
+            setState(() {
+              sendEnable = true;
+            });
+          } else {
+            setState(() {
+              sendEnable = false;
+            });
+          }
+        },
+      ),
+      actions: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(right: 10),
+          child: GestureDetector(
+            child: Text('キャンセル'),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        sendEnable?
+        GestureDetector(
+          child: Text(
+            '送信',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          onTap: () {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(widget.message),
+            ));
+          },
+        )
+        :
+        Text('送信')
+      ],
+    );
+  }
+}
+
 class AccountScreen extends StatefulWidget {
 
   const AccountScreen({
@@ -112,7 +188,7 @@ class _AccountScreenState extends State<AccountScreen> {
                           showDialog<void>(
                           context: context,
                           builder: (_) {
-                            return ShowAlertDialog(message: '意味のない質問だよ');
+                            return InquiryDialog(message: 'バカみたいな質問だな',);
                           });
                         },
                         child: CircleAvatar(
@@ -263,11 +339,10 @@ class _AccountScreenState extends State<AccountScreen> {
                                 IconButton(
                                   icon: Icon(Icons.message_outlined),
                                   onPressed: () {
-                                    _copyToClipboard(toClipboard: _postList[index]["post"]);
                                     showDialog<void>(
                                     context: context,
                                     builder: (_) {
-                                      return ShowAlertDialog(message: '意味のない質問だよ');
+                                      return InquiryDialog(message: '意味のない質問だよ',);
                                     });
                                   },
                                 ),

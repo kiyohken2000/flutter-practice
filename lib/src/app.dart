@@ -45,16 +45,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: _screens[_selectedIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.favorite), label: '発言'),
-            BottomNavigationBarItem(icon: Icon(Icons.image_aspect_ratio), label: 'ギャラリー'),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'アカウント'),
-          ],
-          type: BottomNavigationBarType.fixed,
-        ));
+      body: _screens[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: '発言'),
+          BottomNavigationBarItem(icon: Icon(Icons.image_aspect_ratio), label: 'ギャラリー'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'アカウント'),
+        ],
+        type: BottomNavigationBarType.fixed,
+      )
+    );
   }
 }

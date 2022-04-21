@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'screens/account.dart';
 import 'screens/speech.dart';
 import 'screens/galery.dart';
+import 'screens/notification.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -31,7 +32,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static const _screens = [
     SpeechScreen(),
     GaleryScreen(),
-    AccountScreen()
+    AccountScreen(),
+    NotificationScreen(),
   ];
 
   int _selectedIndex = 0;
@@ -53,6 +55,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           BottomNavigationBarItem(icon: Icon(Icons.favorite), label: '発言'),
           BottomNavigationBarItem(icon: Icon(Icons.image_aspect_ratio), label: 'ギャラリー'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'アカウント'),
+          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: '通知'),
         ],
         type: BottomNavigationBarType.fixed,
       )

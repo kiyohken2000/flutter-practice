@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.4+5
+version: 1.0.5+6
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
@@ -44,6 +44,8 @@ dependencies:
   cloud_firestore: ^3.1.12
   getwidget: ^2.0.4
   firebase_storage: ^10.2.12
+  flutter_local_notifications: ^9.4.0
+  timezone: ^0.8.0
   
 dependency_overrides:
   photo_view:

@@ -30,6 +30,8 @@
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>音声読み上げのためにマイクを使用します</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>アプリ内の画像を保存するためにフォトライブラリを使用します</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>音声読み上げのためにマイクを使用します</string>
 	<key>UILaunchStoryboardName</key>

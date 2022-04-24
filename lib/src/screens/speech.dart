@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:month_picker_dialog/month_picker_dialog.dart';
+import 'package:intl/intl.dart';
+
 import 'article.dart';
 
 class SpeechScreen extends StatefulWidget {
@@ -19,6 +22,8 @@ class _SpeechScreenState extends State<SpeechScreen> {
   List _items = [];
   bool _searchBoolean = false; //追加
   List _searchIndexList = []; //追加
+  String selectedDate = '';
+  bool _isMonthPick = false;
 
   void loadJson() async {
     final String response = await rootBundle.loadString('assets/json/abeshinzo.json');
@@ -52,6 +57,29 @@ class _SpeechScreenState extends State<SpeechScreen> {
         },
       ),
     );
+  }
+
+  Future _getDate(BuildContext context) async {
+    final initialDate = DateTime.now();
+
+    final newDate =
+        await showMonthPicker(context: context, initialDate: initialDate);
+
+    if (newDate != null) {
+      DateFormat outputFormat = DateFormat('yyyy-MM');
+      String date = outputFormat.format(newDate);
+      setState(() {
+        _isMonthPick = true;
+        _searchIndexList = [];
+        for (int i = 0; i < _items.length; i++) {
+          if (_items[i]["Date"].contains(date)) {
+            _searchIndexList.add(_items[i]);
+          }
+        }
+      });
+    } else {
+      return;
+    }
   }
 
   Widget _searchTextField() { //追加
@@ -129,6 +157,26 @@ class _SpeechScreenState extends State<SpeechScreen> {
       }
   }
 
+  Widget _pickerButton() {
+    if(!_isMonthPick) {
+      return FloatingActionButton(
+        child: Icon(Icons.calendar_month_outlined),
+        onPressed: () {
+          _getDate(context);
+        },
+      );
+    } else {
+      return FloatingActionButton(
+        child: Icon(Icons.clear),
+        onPressed: () {
+          setState(() {
+            _isMonthPick = false;
+          });
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,6 +190,7 @@ class _SpeechScreenState extends State<SpeechScreen> {
             onPressed: () {
               setState(() {
                 _searchBoolean = true;
+                _isMonthPick = false;
                 _searchIndexList = []; //追加
               });
             })
@@ -152,13 +201,15 @@ class _SpeechScreenState extends State<SpeechScreen> {
               icon: Icon(Icons.clear),
               onPressed: () {
                 setState(() {
+                  _isMonthPick = false;
                   _searchBoolean = false;
                 });
               }
             )
           ]
       ),
-      body: !_searchBoolean ? _defaultListView() : _searchListView()
+      body: !_searchBoolean && !_isMonthPick ? _defaultListView() : _searchListView(),
+      floatingActionButton: _pickerButton()
     );
   }
 }

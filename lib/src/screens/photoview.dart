@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/services.dart';
 
 class PhotoviewScreen extends StatefulWidget {
   final int index;
@@ -24,9 +25,13 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
   late PageController _pageController;
   int _currentIndex = 0;
   String infoMessage = '';
+  bool isLoading = false;
 
   void _saveImage({image}) async {
     try {
+      setState(() {
+        isLoading = true;
+      });
       var response = await Dio()
         .get(image, options: Options(responseType: ResponseType.bytes));
       final result = await ImageGallerySaver.saveImage(
@@ -48,7 +53,12 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
       }
     } catch (e) {
       this.infoMessage = '保存に失敗しました';
-        Fluttertoast.showToast(msg: '保存に失敗しました');
+      Fluttertoast.showToast(msg: '保存に失敗しました');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+      HapticFeedback.mediumImpact();
     }
   }
 
@@ -59,6 +69,22 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
     setState(() {
       _currentIndex = widget.index;
     });
+  }
+
+  Widget _saveButton() {
+    return FloatingActionButton(
+      child: Icon(Icons.download),
+      onPressed: () {
+        _saveImage(image: widget.photoList[_currentIndex]);
+      },
+    );
+  }
+
+  Widget _isLoading() {
+    return Container(
+      padding: EdgeInsets.only(right: 10, bottom: 10),
+      child: CircularProgressIndicator(),
+    );
   }
   
   @override
@@ -97,12 +123,7 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.download),
-        onPressed: () {
-          _saveImage(image: widget.photoList[_currentIndex]);
-        },
-      ),
+      floatingActionButton: !isLoading ? _saveButton() : _isLoading()
     );
   }
 }

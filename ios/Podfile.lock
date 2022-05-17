@@ -440,11 +440,7 @@ PODS:
   - PromisesObjC (2.1.0)
   - shared_preferences_ios (0.0.1):
     - Flutter
-  - speech_to_text (0.0.1):
-    - Flutter
-    - Try
   - Toast (4.0.0)
-  - Try (2.1.1)
   - url_launcher_ios (0.0.1):
     - Flutter
 
@@ -458,7 +454,6 @@ DEPENDENCIES:
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
   - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
-  - speech_to_text (from `.symlinks/plugins/speech_to_text/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
@@ -479,7 +474,6 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - Toast
-    - Try
 
 EXTERNAL SOURCES:
   cloud_firestore:
@@ -500,8 +494,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/image_gallery_saver/ios"
   shared_preferences_ios:
     :path: ".symlinks/plugins/shared_preferences_ios/ios"
-  speech_to_text:
-    :path: ".symlinks/plugins/speech_to_text/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
@@ -530,9 +522,7 @@ SPEC CHECKSUMS:
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 99b6f43f9e1044bd87a95a60beff28c2c44ddb72
   shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
-  speech_to_text: b43a7d99aef037bd758ed8e45d79bbac035d2dfe
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
-  Try: 5ef669ae832617b3cee58cb2c6f99fb767a4ff96
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
 
 PODFILE CHECKSUM: 775997f741c536251164e3eacf6e34abf2eb7a17

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -59,7 +61,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     sound: 'sound.caf',//←Xcodeにドロップしたファイル名
   );
 
-  Future<void> notify() {
+  Future<void> notify(int seconds, int id) {
     final flnp = FlutterLocalNotificationsPlugin();
     return flnp.initialize(
       InitializationSettings(
@@ -68,10 +70,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
       ),
     ).then((_) => 
       flnp.zonedSchedule(
-        0,
+        id,
         '安倍晋三エクスプローラー',
         'チョーゼバ イターキマス お箸ｸﾙﾝｯ',
-        tz.TZDateTime.now(tz.UTC).add(Duration(seconds: 60)),
+        tz.TZDateTime.now(tz.UTC).add(Duration(seconds: seconds)),
         NotificationDetails(
           iOS: iosChannelSpecifics,
           android: androidChannelSpecifics
@@ -126,13 +128,30 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 height: 50, //高さ
                 child: ElevatedButton(
                   onPressed: () {
-                    notify();
+                    notify(60, 0);
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Colors.blue,
                     elevation: 16,
                   ),
                   child: Text('1分後にチョーゼバ'),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 40),
+              child: SizedBox(
+                width: 300, //横幅
+                height: 50, //高さ
+                child: ElevatedButton(
+                  onPressed: () {
+                    notify(600, 1);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.orange,
+                    elevation: 16,
+                  ),
+                  child: Text('10分後にチョーゼバ'),
                 ),
               ),
             ),
@@ -147,7 +166,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   primary: Colors.red,
                   elevation: 16,
                 ),
-                child: Text('予定されているチョーゼバをキャンセル'),
+                child: Text('チョーゼバをキャンセル'),
               ),
             )
           ],

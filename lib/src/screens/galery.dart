@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'photoview.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class GaleryScreen extends StatefulWidget {
 
@@ -63,7 +64,10 @@ class _GaleryScreenState extends State<GaleryScreen> {
               var imageIndex = index;
               var image = "https://kiyohken2000.web.fc2.com/" + galeryRef + "/" + imageIndex.toString() + ".jpg";
               return GestureDetector(
-                child: Image.network(image, fit: BoxFit.cover,),
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: image,
+                ),
                 onTap: () {
                   Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {

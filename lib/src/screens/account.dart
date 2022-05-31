@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:flutter/services.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ShowAlertDialog extends StatelessWidget {
   final String message;
@@ -205,8 +206,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         minRadius: 60.0,
                         child: CircleAvatar(
                           radius: 50.0,
-                          backgroundImage:
-                              NetworkImage("https://kiyohken2000.web.fc2.com/" + galeryRef + "/33.jpg"),
+                          backgroundImage: CachedNetworkImageProvider("https://kiyohken2000.web.fc2.com/" + galeryRef + "/33.jpg"),
                         ),
                       ),
                       GestureDetector(

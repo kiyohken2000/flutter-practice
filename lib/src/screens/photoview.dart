@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/services.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class PhotoviewScreen extends StatefulWidget {
   final int index;
@@ -99,7 +100,7 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
         pageController: _pageController,
         builder: (context, index) {
           return PhotoViewGalleryPageOptions(
-            imageProvider: NetworkImage(widget.photoList[index]),
+            imageProvider: CachedNetworkImageProvider(widget.photoList[index]),
             minScale: PhotoViewComputedScale.contained * 0.8,
             maxScale: PhotoViewComputedScale.covered * 2,
           );

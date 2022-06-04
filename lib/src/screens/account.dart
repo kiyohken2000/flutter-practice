@@ -315,7 +315,7 @@ class _AccountScreenState extends State<AccountScreen> {
                       children: [
                         ListTile(
                           leading: GFAvatar(
-                            backgroundImage: NetworkImage("https://kiyohken2000.web.fc2.com/" + galeryRef + "/33.jpg"),
+                            backgroundImage: CachedNetworkImageProvider("https://kiyohken2000.web.fc2.com/" + galeryRef + "/33.jpg"),
                           ),
                           title: Text('安倍晋三'),
                           subtitle: Text(_postList[index]["post"]),

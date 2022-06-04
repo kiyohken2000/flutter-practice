@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -103,10 +101,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
           children: [
             Padding(
               child: Text(_pending?'チョーゼバ待機中':'予定されているチョーゼバはありません'),
-              padding: EdgeInsets.only(bottom: 40),
+              padding: EdgeInsets.only(bottom: 20),
             ),
             Padding(
-              padding: EdgeInsets.only(bottom: 40),
+              padding: EdgeInsets.only(bottom: 20),
               child: SizedBox(
                 width: 300, //横幅
                 height: 50, //高さ
@@ -122,7 +120,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(bottom: 40),
+              padding: EdgeInsets.only(bottom: 20),
               child: SizedBox(
                 width: 300, //横幅
                 height: 50, //高さ
@@ -139,7 +137,41 @@ class _NotificationScreenState extends State<NotificationScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(bottom: 40),
+              padding: EdgeInsets.only(bottom: 20),
+              child: SizedBox(
+                width: 300, //横幅
+                height: 50, //高さ
+                child: ElevatedButton(
+                  onPressed: () {
+                    notify(180, 0);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.amber,
+                    elevation: 16,
+                  ),
+                  child: Text('3分後にチョーゼバ'),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: SizedBox(
+                width: 300, //横幅
+                height: 50, //高さ
+                child: ElevatedButton(
+                  onPressed: () {
+                    notify(300, 0);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blueGrey,
+                    elevation: 16,
+                  ),
+                  child: Text('5分後にチョーゼバ'),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 20),
               child: SizedBox(
                 width: 300, //横幅
                 height: 50, //高さ

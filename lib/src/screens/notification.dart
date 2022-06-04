@@ -143,7 +143,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 height: 50, //高さ
                 child: ElevatedButton(
                   onPressed: () {
-                    notify(180, 0);
+                    notify(180, 1);
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Colors.amber,
@@ -160,7 +160,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 height: 50, //高さ
                 child: ElevatedButton(
                   onPressed: () {
-                    notify(300, 0);
+                    notify(300, 2);
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Colors.blueGrey,
@@ -177,7 +177,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 height: 50, //高さ
                 child: ElevatedButton(
                   onPressed: () {
-                    notify(600, 1);
+                    notify(600, 3);
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Colors.orange,

@@ -26,17 +26,6 @@ class _AddTagDialogState extends State<AddTagDialog> {
   String messageValue = '';
   bool sendEnable = false;
 
-  addToAllTags(String message) {
-    DocumentReference ref = FirebaseFirestore.instance
-      .collection('galery')
-      .doc('tags');
-    ref.update(
-      {
-        "tags": FieldValue.arrayUnion([message]),
-      },
-    );
-  }
-
   addTagToPhoto(String message, int currentIndex) async{
     String idx = currentIndex.toString();
     DocumentReference docRef = FirebaseFirestore.instance.collection('photos').doc(idx);
@@ -103,7 +92,6 @@ class _AddTagDialogState extends State<AddTagDialog> {
             ),
           ),
           onTap: () {
-            addToAllTags(messageValue);
             addTagToPhoto(messageValue, widget.currentIndex);
             Navigator.pop(context);
           },
@@ -303,7 +291,7 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
           ),
           Positioned(
             width: MediaQuery.of(context).size.width,
-            height: 100.0,
+            height: MediaQuery.of(context).size.height,
             child: _tagChips()
           ),
         ]

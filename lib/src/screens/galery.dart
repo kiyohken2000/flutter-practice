@@ -24,6 +24,7 @@ class _GaleryScreenState extends State<GaleryScreen> {
   String selectedTag = '';
   bool tagSelected = false;
   List filteredPhotos = [];
+  List tags = [];
 
   void loadGalery() async {
     final docRef = FirebaseFirestore.instance.collection('galery').doc('xcpa16TZ6IlV65I2D7KF'); // DocumentReference
@@ -45,16 +46,16 @@ class _GaleryScreenState extends State<GaleryScreen> {
   }
 
   void getTags() async{
-    DocumentReference docRef = FirebaseFirestore.instance.collection('galery').doc('tags');
-    final docSnapshop = await docRef.get();
-    setState(() {
-      tagList = docSnapshop['tags'];
-    });
     final snapshot = await FirebaseFirestore.instance.collection('photos').get();
-    var array = [];
-    snapshot.docs.forEach((element) {array.add(element.data());});
+    var photoArray = [];
+    var tagArray = [];
+    snapshot.docs.forEach((element) {
+      photoArray.add(element.data());
+      tagArray.addAll(element.data()['tags']);
+    });
     setState(() {
-      documentList = array;
+      documentList = photoArray;
+      tagList = tagArray.toSet().toList();;
     });
   }
 

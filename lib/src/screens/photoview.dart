@@ -178,7 +178,7 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
       );
     } else {
       DocumentReference ref = FirebaseFirestore.instance.collection('photos').doc(idx);
-      ref.set({
+      await ref.set({
         "id": _currentIndex,
         "tags": FieldValue.arrayUnion([])
       });

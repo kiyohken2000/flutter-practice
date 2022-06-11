@@ -21,10 +21,12 @@ class _GaleryScreenState extends State<GaleryScreen> {
   List tagList = [];
   List<dynamic> documentList = [];
   bool _searchBoolean = false;
+  bool _keywordBoolean = false;
   String selectedTag = '';
   bool tagSelected = false;
   List filteredPhotos = [];
-  List tags = [];
+  List _searchTagList = [];
+  String keyword = '';
 
   void loadGalery() async {
     final docRef = FirebaseFirestore.instance.collection('galery').doc('xcpa16TZ6IlV65I2D7KF'); // DocumentReference
@@ -55,7 +57,7 @@ class _GaleryScreenState extends State<GaleryScreen> {
     });
     setState(() {
       documentList = photoArray;
-      tagList = tagArray.toSet().toList();;
+      tagList = tagArray.toSet().toList();
     });
   }
 
@@ -75,6 +77,9 @@ class _GaleryScreenState extends State<GaleryScreen> {
             _searchBoolean = false;
             selectedTag = '';
             tagSelected = false;
+            _keywordBoolean = false;
+            _searchTagList = [];
+            keyword = '';
           });
         },
       );
@@ -84,6 +89,7 @@ class _GaleryScreenState extends State<GaleryScreen> {
         onPressed: () {
           setState(() {
             _searchBoolean = true;
+            _keywordBoolean = true;
           });
         },
       );
@@ -109,6 +115,28 @@ class _GaleryScreenState extends State<GaleryScreen> {
   Widget _tagChips() {
     if(tagList.length == 0 || !_searchBoolean ) {
       return Wrap();
+    } else if(_searchTagList.length != 0 || keyword.length != 0) {
+      return ListView(
+       primary: true,
+       shrinkWrap: true,
+       children: <Widget>[
+         Wrap(
+           spacing: 4.0,
+           runSpacing: 0.0,
+           children: List<Widget>.generate(
+             _searchTagList.length, // place the length of the array here
+             (int index) {
+               return ActionChip(
+                 label: Text(_searchTagList[index]),
+                 onPressed: () {
+                  onSelect(_searchTagList[index]);
+                 },
+               );
+             }
+           ).toList(),
+         ),
+       ],
+     );
     } else {
       return ListView(
        primary: true,
@@ -203,12 +231,66 @@ class _GaleryScreenState extends State<GaleryScreen> {
     }
   }
 
+  Widget _searchTextField() { //追加
+      return TextField(
+        autofocus: true, //TextFieldが表示されるときにフォーカスする（キーボードを表示する）
+        cursorColor: Colors.white, //カーソルの色
+        style: TextStyle( //テキストのスタイル
+          color: Colors.white,
+          fontSize: 20,
+        ),
+        textInputAction: TextInputAction.search, //キーボードのアクションボタンを指定
+        decoration: InputDecoration( //TextFiledのスタイル
+          enabledBorder: UnderlineInputBorder( //デフォルトのTextFieldの枠線
+            borderSide: BorderSide(color: Colors.white)
+          ),
+          focusedBorder: UnderlineInputBorder( //TextFieldにフォーカス時の枠線
+            borderSide: BorderSide(color: Colors.white)
+          ),
+          hintText: 'タグを検索', //何も入力してないときに表示されるテキスト
+          hintStyle: TextStyle( //hintTextのスタイル
+            color: Colors.white60,
+            fontSize: 20,
+          ),
+        ),
+        onChanged: (String s) { //追加
+          setState(() {
+            keyword = s;
+          });
+          if(s.length == 0) {
+            setState(() {
+              _searchTagList = [];
+            });
+          } else {
+            setState(() {
+              _searchTagList = [];
+              for (int i = 0; i < tagList.length; i++) {
+                if (tagList[i].contains(s)) {
+                  _searchTagList.add(tagList[i]);
+                }
+              }
+            });
+          }
+        },
+      );
+    }
+
+  Widget _headerTitle() {
+    if(tagSelected) {
+      return Text(selectedTag);
+    } else if(_keywordBoolean) {
+      return _searchTextField();
+    } else {
+      return Text('ギャラリー');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(!tagSelected? 'ギャラリー': selectedTag),
+        title: _headerTitle(),
         toolbarHeight: 40,
         actions: [
           _tagButton(),

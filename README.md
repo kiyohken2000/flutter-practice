@@ -9,4 +9,5 @@ arch -x86_64 pod install
 ```
 flutter build ios
 flutter build appbundle
+flutter build apk
 ```

@@ -61,7 +61,7 @@ class _AddTagDialogState extends State<AddTagDialog> {
           setState(() {
             messageValue = s;
           });
-          if(s.length > 2) {
+          if(s.length > 2 && s.length < 9) {
             setState(() {
               sendEnable = true;
             });
@@ -97,7 +97,7 @@ class _AddTagDialogState extends State<AddTagDialog> {
           },
         )
         :
-        Text('送信')
+        Text('追加')
       ],
     );
   }
@@ -123,6 +123,7 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
   String infoMessage = '';
   bool isLoading = false;
   List tags = [];
+  bool _isTagView = true;
 
   void _saveImage({image}) async {
     try {
@@ -176,9 +177,22 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
         onError: (error) => print("Listen failed: $error"),
       );
     } else {
-      setState(() {
-        tags = [];
+      DocumentReference ref = FirebaseFirestore.instance.collection('photos').doc(idx);
+      ref.set({
+        "id": _currentIndex,
+        "tags": FieldValue.arrayUnion([])
       });
+      var data;
+      final docRef = FirebaseFirestore.instance.collection("photos").doc(idx);
+      docRef.snapshots().listen(
+        (event) => {
+          data = event.data()!['tags'],
+          setState(() {
+            tags = data;
+          })
+        },
+        onError: (error) => print("Listen failed: $error"),
+      );
     }
   }
 
@@ -225,7 +239,7 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
   }
 
   Widget _tagChips() {
-    if(tags.length == 0) {
+    if(tags.length == 0 || !_isTagView) {
       return Wrap();
     } else {
       return Wrap(
@@ -250,12 +264,35 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
     }
   }
 
+  Widget _showTagButton() {
+    return IconButton(
+      icon: Icon(Icons.label_important_outline),
+      onPressed: () {
+        setState(() {
+          _isTagView = true;
+        });
+      },
+    );
+  }
+
+  Widget _hideTagButton() {
+    return IconButton(
+      icon: Icon(Icons.label_important),
+      onPressed: () {
+        setState(() {
+          _isTagView = false;
+        });
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('写真'),
         toolbarHeight: 40,
+        actions: _isTagView?[_hideTagButton()]:[_showTagButton()],
       ),
       body: Stack(
         children: <Widget>[

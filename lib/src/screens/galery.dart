@@ -110,20 +110,27 @@ class _GaleryScreenState extends State<GaleryScreen> {
     if(tagList.length == 0 || !_searchBoolean ) {
       return Wrap();
     } else {
-      return Wrap(
-        spacing: 5,
-        children: List.generate(
-          tagList.length,
-          (index) {
-            return GestureDetector(
-              onTap: () {
-                onSelect(tagList[index]);
-              },
-              child: Chip(label: Text(tagList[index])),
-            );
-          },
-        ),
-      );
+      return ListView(
+       primary: true,
+       shrinkWrap: true,
+       children: <Widget>[
+         Wrap(
+           spacing: 4.0,
+           runSpacing: 0.0,
+           children: List<Widget>.generate(
+             tagList.length, // place the length of the array here
+             (int index) {
+               return ActionChip(
+                 label: Text(tagList[index]),
+                 onPressed: () {
+                  onSelect(tagList[index]);
+                 },
+               );
+             }
+           ).toList(),
+         ),
+       ],
+     );
     }
   }
 

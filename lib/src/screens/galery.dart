@@ -27,6 +27,7 @@ class _GaleryScreenState extends State<GaleryScreen> {
   List filteredPhotos = [];
   List _searchTagList = [];
   String keyword = '';
+  var tagMap = <dynamic, dynamic>{};
 
   void loadGalery() async {
     final docRef = FirebaseFirestore.instance.collection('galery').doc('xcpa16TZ6IlV65I2D7KF'); // DocumentReference
@@ -55,9 +56,18 @@ class _GaleryScreenState extends State<GaleryScreen> {
       photoArray.add(element.data());
       tagArray.addAll(element.data()['tags']);
     });
+    var map = Map();
+    tagArray.forEach((element) {
+      if(!map.containsKey(element)) {
+        map[element] = 1;
+      } else {
+        map[element] +=1;
+      }
+    });
     setState(() {
       documentList = photoArray;
       tagList = tagArray.toSet().toList();
+      tagMap = map;
     });
   }
 
@@ -126,12 +136,13 @@ class _GaleryScreenState extends State<GaleryScreen> {
            children: List<Widget>.generate(
              _searchTagList.length, // place the length of the array here
              (int index) {
-               return ActionChip(
-                 label: Text(_searchTagList[index]),
-                 onPressed: () {
-                  onSelect(_searchTagList[index]);
-                 },
-               );
+                var count = tagMap[_searchTagList[index]];
+                return ActionChip(
+                  label: Text(_searchTagList[index] + '(' + count.toString() + ')'),
+                  onPressed: () {
+                    onSelect(_searchTagList[index]);
+                  },
+                );
              }
            ).toList(),
          ),
@@ -148,8 +159,9 @@ class _GaleryScreenState extends State<GaleryScreen> {
            children: List<Widget>.generate(
              tagList.length, // place the length of the array here
              (int index) {
+              var count = tagMap[tagList[index]];
                return ActionChip(
-                 label: Text(tagList[index]),
+                 label: Text(tagList[index] + '(' + count.toString() + ')'),
                  onPressed: () {
                   onSelect(tagList[index]);
                  },
@@ -232,48 +244,48 @@ class _GaleryScreenState extends State<GaleryScreen> {
   }
 
   Widget _searchTextField() { //追加
-      return TextField(
-        autofocus: true, //TextFieldが表示されるときにフォーカスする（キーボードを表示する）
-        cursorColor: Colors.white, //カーソルの色
-        style: TextStyle( //テキストのスタイル
-          color: Colors.white,
+    return TextField(
+      autofocus: false, //TextFieldが表示されるときにフォーカスする（キーボードを表示する）
+      cursorColor: Colors.white, //カーソルの色
+      style: TextStyle( //テキストのスタイル
+        color: Colors.white,
+        fontSize: 20,
+      ),
+      textInputAction: TextInputAction.search, //キーボードのアクションボタンを指定
+      decoration: InputDecoration( //TextFiledのスタイル
+        enabledBorder: UnderlineInputBorder( //デフォルトのTextFieldの枠線
+          borderSide: BorderSide(color: Colors.white)
+        ),
+        focusedBorder: UnderlineInputBorder( //TextFieldにフォーカス時の枠線
+          borderSide: BorderSide(color: Colors.white)
+        ),
+        hintText: 'タグを検索', //何も入力してないときに表示されるテキスト
+        hintStyle: TextStyle( //hintTextのスタイル
+          color: Colors.white60,
           fontSize: 20,
         ),
-        textInputAction: TextInputAction.search, //キーボードのアクションボタンを指定
-        decoration: InputDecoration( //TextFiledのスタイル
-          enabledBorder: UnderlineInputBorder( //デフォルトのTextFieldの枠線
-            borderSide: BorderSide(color: Colors.white)
-          ),
-          focusedBorder: UnderlineInputBorder( //TextFieldにフォーカス時の枠線
-            borderSide: BorderSide(color: Colors.white)
-          ),
-          hintText: 'タグを検索', //何も入力してないときに表示されるテキスト
-          hintStyle: TextStyle( //hintTextのスタイル
-            color: Colors.white60,
-            fontSize: 20,
-          ),
-        ),
-        onChanged: (String s) { //追加
+      ),
+      onChanged: (String s) { //追加
+        setState(() {
+          keyword = s;
+        });
+        if(s.length == 0) {
           setState(() {
-            keyword = s;
+            _searchTagList = [];
           });
-          if(s.length == 0) {
-            setState(() {
-              _searchTagList = [];
-            });
-          } else {
-            setState(() {
-              _searchTagList = [];
-              for (int i = 0; i < tagList.length; i++) {
-                if (tagList[i].contains(s)) {
-                  _searchTagList.add(tagList[i]);
-                }
+        } else {
+          setState(() {
+            _searchTagList = [];
+            for (int i = 0; i < tagList.length; i++) {
+              if (tagList[i].contains(s)) {
+                _searchTagList.add(tagList[i]);
               }
-            });
-          }
-        },
-      );
-    }
+            }
+          });
+        }
+      },
+    );
+  }
 
   Widget _headerTitle() {
     if(tagSelected) {

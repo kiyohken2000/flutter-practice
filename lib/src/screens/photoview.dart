@@ -32,13 +32,13 @@ class _AddTagDialogState extends State<AddTagDialog> {
     final docSnapshop = await docRef.get();
     if (!docSnapshop.exists) {
       DocumentReference ref = FirebaseFirestore.instance.collection('photos').doc(idx);
-      ref.set({
+      await ref.set({
         "id": currentIndex,
         "tags": FieldValue.arrayUnion([message])
       });
     } else {
       DocumentReference ref = FirebaseFirestore.instance.collection('photos').doc(idx);
-      ref.update({
+      await ref.update({
         "id": currentIndex,
         "tags": FieldValue.arrayUnion([message])
       });
@@ -162,37 +162,26 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
 
   void _getTags(_currentIndex) async {
     String idx = _currentIndex.toString();
-    DocumentReference documentRef = FirebaseFirestore.instance.collection('photos').doc(idx);
+    DocumentReference documentRef = await FirebaseFirestore.instance.collection('photos').doc(idx);
     final docSnapshop = await documentRef.get();
     if(docSnapshop.exists) {
-      var data;
-      final docRef = FirebaseFirestore.instance.collection("photos").doc(idx);
-      docRef.snapshots().listen(
-        (event) => {
-          data = event.data()!['tags'],
-          setState(() {
-            tags = data;
-          })
-        },
-        onError: (error) => print("Listen failed: $error"),
-      );
+      DocumentReference documentRef = await FirebaseFirestore.instance.collection('photos').doc(idx);
+      final docSnapshop = await documentRef.get();
+      final data = await docSnapshop.data() as Map;
+      setState(() {
+        tags = data['tags'];
+      });
     } else {
       DocumentReference ref = FirebaseFirestore.instance.collection('photos').doc(idx);
       await ref.set({
         "id": _currentIndex,
         "tags": FieldValue.arrayUnion([])
       });
-      var data;
-      final docRef = FirebaseFirestore.instance.collection("photos").doc(idx);
-      docRef.snapshots().listen(
-        (event) => {
-          data = event.data()!['tags'],
-          setState(() {
-            tags = data;
-          })
-        },
-        onError: (error) => print("Listen failed: $error"),
-      );
+      final docSnapshot = await ref.get();
+      final data = await docSnapshot.data() as Map;
+      setState(() {
+        tags = data['tags'];
+      });
     }
   }
 
@@ -233,6 +222,8 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
         context: context,
         builder: (_) {
           return AddTagDialog(currentIndex: _currentIndex);
+        }).then((value) {
+          _getTags(_currentIndex);
         });
       }
     );
@@ -249,13 +240,14 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
           (index) {
             return Chip(
               label: Text(tags[index]),
-              onDeleted: () {
+              onDeleted: () async{
                 String idx = _currentIndex.toString();
                 DocumentReference ref = FirebaseFirestore.instance.collection('photos').doc(idx);
-                ref.update({
+                await ref.update({
                   "id": _currentIndex,
                   "tags": FieldValue.arrayRemove([tags[index]])
                 });
+                _getTags(_currentIndex);
               },
             );
           },

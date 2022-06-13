@@ -25,9 +25,10 @@ class _GaleryScreenState extends State<GaleryScreen> {
   String selectedTag = '';
   bool tagSelected = false;
   List filteredPhotos = [];
-  List _searchTagList = [];
+  List<Map<String, dynamic>> _searchTagList = [];
   String keyword = '';
   var tagMap = <dynamic, dynamic>{};
+  List<Map<String, dynamic>> addCountedTags = [];
 
   void loadGalery() async {
     final docRef = FirebaseFirestore.instance.collection('galery').doc('xcpa16TZ6IlV65I2D7KF'); // DocumentReference
@@ -68,6 +69,15 @@ class _GaleryScreenState extends State<GaleryScreen> {
       documentList = photoArray;
       tagList = tagArray.toSet().toList();
       tagMap = map;
+    });
+    var tags = tagArray.toSet().toList();
+    final List<Map<String, dynamic>> addCount = tags.map((e) => {
+      'label': e,
+      'count': tagMap[e]
+    }).toList();
+    addCount.sort((a,b) => b['count'].compareTo(a['count']));
+    setState(() {
+      addCountedTags = addCount;
     });
   }
 
@@ -136,11 +146,10 @@ class _GaleryScreenState extends State<GaleryScreen> {
            children: List<Widget>.generate(
              _searchTagList.length, // place the length of the array here
              (int index) {
-                var count = tagMap[_searchTagList[index]];
                 return ActionChip(
-                  label: Text(_searchTagList[index] + '(' + count.toString() + ')'),
+                  label: Text(_searchTagList[index]['label'] + '(' + _searchTagList[index]['count'].toString() + ')'),
                   onPressed: () {
-                    onSelect(_searchTagList[index]);
+                    onSelect(_searchTagList[index]['label']);
                   },
                 );
              }
@@ -157,13 +166,12 @@ class _GaleryScreenState extends State<GaleryScreen> {
            spacing: 4.0,
            runSpacing: 0.0,
            children: List<Widget>.generate(
-             tagList.length, // place the length of the array here
+             addCountedTags.length, // place the length of the array here
              (int index) {
-              var count = tagMap[tagList[index]];
                return ActionChip(
-                 label: Text(tagList[index] + '(' + count.toString() + ')'),
+                 label: Text(addCountedTags[index]['label'] + '(' + addCountedTags[index]['count'].toString() + ')'),
                  onPressed: () {
-                  onSelect(tagList[index]);
+                  onSelect(addCountedTags[index]['label']);
                  },
                );
              }
@@ -276,9 +284,9 @@ class _GaleryScreenState extends State<GaleryScreen> {
         } else {
           setState(() {
             _searchTagList = [];
-            for (int i = 0; i < tagList.length; i++) {
-              if (tagList[i].contains(s)) {
-                _searchTagList.add(tagList[i]);
+            for (int i = 0; i < addCountedTags.length; i++) {
+              if (addCountedTags[i]['label'].contains(s)) {
+                _searchTagList.add(addCountedTags[i]);
               }
             }
           });

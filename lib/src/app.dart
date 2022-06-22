@@ -5,6 +5,7 @@ import 'screens/account.dart';
 import 'screens/speech.dart';
 import 'screens/galery.dart';
 import 'screens/notification.dart';
+import 'screens/chase.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -45,6 +46,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     GaleryScreen(),
     AccountScreen(),
     NotificationScreen(),
+    ChaseScreen(),
   ];
 
   int _selectedIndex = 0;
@@ -67,6 +69,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           BottomNavigationBarItem(icon: Icon(Icons.image_aspect_ratio), label: 'ギャラリー'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'アカウント'),
           BottomNavigationBarItem(icon: Icon(Icons.notifications), label: '通知'),
+          BottomNavigationBarItem(icon: Icon(Icons.location_searching), label: '追跡'),
         ],
         type: BottomNavigationBarType.fixed,
       )

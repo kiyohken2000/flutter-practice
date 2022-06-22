@@ -7,6 +7,8 @@
         android:label="聖帝エクスプローラー"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC34_M1FmzZfPgDwDAcg4V9sgjbdFMf78U"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

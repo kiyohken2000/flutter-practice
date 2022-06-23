@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:uuid/uuid.dart';
 
 class ChaseScreen extends StatefulWidget {
 
@@ -23,7 +24,7 @@ class _ChaseScreenState extends State<ChaseScreen> {
   //初期位置
   final CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(35.67598820659808, 139.74483117563184),
-    zoom: 7,
+    zoom: 6,
   );
 
   @override
@@ -50,10 +51,11 @@ class _ChaseScreenState extends State<ChaseScreen> {
     articlesList.asMap().forEach((index, article) {
       article['positions'].asMap().forEach((indexChild, location) {
         var coordinate = location['position'];
-        var id = index + indexChild;
+        var uuid = Uuid();
+        var newId = uuid.v4();
         markers.add(
           Marker(
-            markerId: MarkerId(id.toString()),
+            markerId: MarkerId(newId),
             position: LatLng(coordinate[0], coordinate[1]),
             icon: index == 0? BitmapDescriptor.defaultMarkerWithHue(280): BitmapDescriptor.defaultMarker,
             infoWindow: InfoWindow(

@@ -19,6 +19,7 @@ class _GaleryScreenState extends State<GaleryScreen> {
   String galeryRef = 'appstore';
   List photoList = [];
   List tagList = [];
+  List filteredPhotoList = [];
   List<dynamic> documentList = [];
   bool _searchBoolean = false;
   bool _keywordBoolean = false;
@@ -183,24 +184,30 @@ class _GaleryScreenState extends State<GaleryScreen> {
   }
 
   Widget _filteredPhotos() {
+    var photoArray = [];
+    filteredPhotos.forEach((imageIndex) {
+      var image = "https://kiyohken2000.web.fc2.com/" + galeryRef + "/" + imageIndex.toString() + ".jpg";
+      photoArray.add(image);
+    },);
+    setState(() {
+      filteredPhotoList = photoArray;
+    });
     return Container(
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3, //カラム数
         ),
-        itemCount: filteredPhotos.length,
+        itemCount: filteredPhotoList.length,
         itemBuilder: (context, index) {
-          var imageIndex = filteredPhotos[index];
-          var image = "https://kiyohken2000.web.fc2.com/" + galeryRef + "/" + imageIndex.toString() + ".jpg";
           return GestureDetector(
             child: CachedNetworkImage(
               fit: BoxFit.cover,
-              imageUrl: image,
+              imageUrl: filteredPhotoList[index],
             ),
             onTap: () {
               Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) {
-                  return PhotoviewScreen(index: imageIndex, photoList: photoList);
+                  return PhotoviewScreen(index: index, photoList: filteredPhotoList);
               }));
             },
           );

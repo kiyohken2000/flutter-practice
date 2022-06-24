@@ -106,11 +106,13 @@ class _AddTagDialogState extends State<AddTagDialog> {
 class PhotoviewScreen extends StatefulWidget {
   final int index;
   final List photoList;
+  final String galeryRef;
 
   const PhotoviewScreen({
     Key? key,
     required this.index,
-    required this.photoList
+    required this.photoList,
+    required this.galeryRef
   }) : super(key: key);
   
   @override
@@ -189,8 +191,9 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: widget.index);
+    var index = int.parse(widget.photoList[widget.index].replaceFirst('https://kiyohken2000.web.fc2.com/${widget.galeryRef}/', '').replaceFirst('.jpg', ''));
     setState(() {
-      _currentIndex = widget.index;
+      _currentIndex = index;
     });
     _getTags(_currentIndex);
   }
@@ -299,8 +302,9 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
               );
             },
             onPageChanged: (int index) {
+              var photoIndex = int.parse(widget.photoList[index].replaceFirst('https://kiyohken2000.web.fc2.com/${widget.galeryRef}/', '').replaceFirst('.jpg', ''));
               setState(() {
-                _currentIndex = index;
+                _currentIndex = photoIndex;
               });
               _getTags(_currentIndex);
             },

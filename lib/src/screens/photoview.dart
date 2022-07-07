@@ -203,7 +203,9 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
       child: Icon(Icons.download),
       heroTag: "save",
       onPressed: () {
-        _saveImage(image: widget.photoList[_currentIndex]);
+        var index = _currentIndex.toString();
+        var image = 'https://kiyohken2000.web.fc2.com/${widget.galeryRef}/${index}.jpg';
+        _saveImage(image: image);
       },
     );
   }

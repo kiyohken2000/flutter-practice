@@ -30,6 +30,7 @@ class _GaleryScreenState extends State<GaleryScreen> {
   String keyword = '';
   var tagMap = <dynamic, dynamic>{};
   List<Map<String, dynamic>> addCountedTags = [];
+  bool isReverse = false;
 
   void loadGalery() async {
     final docRef = FirebaseFirestore.instance.collection('galery').doc('xcpa16TZ6IlV65I2D7KF'); // DocumentReference
@@ -133,6 +134,13 @@ class _GaleryScreenState extends State<GaleryScreen> {
     });
   }
 
+  void onReverse() {
+    setState(() {
+      isReverse = !isReverse;
+    });
+    print(photoCount);
+  }
+
   Widget _tagChips() {
     if(tagList.length == 0 || !_searchBoolean ) {
       return Wrap();
@@ -228,7 +236,7 @@ class _GaleryScreenState extends State<GaleryScreen> {
             ),
             itemCount: imageList.length,
             itemBuilder: (context, index) {
-              var imageIndex = index;
+              var imageIndex = !isReverse? index: photoCount - index - 1;
               var image = "https://kiyohken2000.web.fc2.com/" + galeryRef + "/" + imageIndex.toString() + ".jpg";
               return GestureDetector(
                 child: CachedNetworkImage(
@@ -238,7 +246,7 @@ class _GaleryScreenState extends State<GaleryScreen> {
                 onTap: () {
                   Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
-                      return PhotoviewScreen(index: index, photoList: photoList, galeryRef: galeryRef);
+                      return PhotoviewScreen(index: imageIndex, photoList: photoList, galeryRef: galeryRef);
                   }));
                 },
               );
@@ -312,6 +320,27 @@ class _GaleryScreenState extends State<GaleryScreen> {
     }
   }
 
+  Widget _sortButton() {
+    if(!_searchBoolean) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: FloatingActionButton(
+              heroTag: 'speech',
+              child: Icon(Icons.sort),
+              backgroundColor: isReverse?Colors.pinkAccent:Colors.blueAccent,
+              onPressed: () => onReverse(),
+            ),
+          ),
+        ],
+      );
+    } else {
+      return Wrap();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -323,7 +352,8 @@ class _GaleryScreenState extends State<GaleryScreen> {
           _tagButton(),
         ],
       ),
-      body: _imageView()
+      body: _imageView(),
+      floatingActionButton: _sortButton()
     );
   }
 }

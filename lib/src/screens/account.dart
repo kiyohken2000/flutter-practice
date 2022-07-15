@@ -131,7 +131,7 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   void loadGalery() async {
-    final docRef = FirebaseFirestore.instance.collection('galery').doc('xcpa16TZ6IlV65I2D7KF'); // DocumentReference
+    final docRef = FirebaseFirestore.instance.collection('galery').doc('7Un7h8FMiveCWJzp4mLX'); // DocumentReference
     final docSnapshot = await docRef.get(); // DocumentSnapshot
     final data = docSnapshot.exists ? docSnapshot.data() : null; // `data()`で中身を取り出す
     setState(() {

@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 
 class AddTagDialog extends StatefulWidget {
   final int currentIndex;
@@ -132,12 +133,14 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
       setState(() {
         isLoading = true;
       });
+      var uuid = Uuid();
+      var newId = uuid.v4();
       var response = await Dio()
         .get(image, options: Options(responseType: ResponseType.bytes));
       final result = await ImageGallerySaver.saveImage(
         Uint8List.fromList(response.data),
         quality: 100,
-        name: "messageImage");
+        name: "messageImage${newId}");
 
       if (result.containsKey('isSuccess')) {
         this.infoMessage = '写真の保存に成功しました';

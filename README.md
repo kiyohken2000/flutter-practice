@@ -12,5 +12,6 @@ flutter run -d A8858004-0DA4-43F6-AEDF-FA7A10106928
 ```
 flutter build ios
 flutter build appbundle
+flutter build appbundle --release
 flutter build apk
 ```

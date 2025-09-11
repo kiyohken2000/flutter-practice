@@ -1,4 +1,4 @@
-package net.votepurchase.seiteiexplorer.flutter_application_1
+package net.votepurchase.seiteiexplorer
 
 import io.flutter.embedding.android.FlutterActivity
 

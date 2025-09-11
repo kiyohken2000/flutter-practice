@@ -14,7 +14,7 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   List notificationList = [];
-  bool _pending = false;
+  bool _pending = false; // notification status
 
   void loadNotification() async {
     final flnp = FlutterLocalNotificationsPlugin();
@@ -52,7 +52,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     styleInformation: DefaultStyleInformation(true, true),
   );
 
-  var iosChannelSpecifics = IOSNotificationDetails(
+  var iosChannelSpecifics = DarwinNotificationDetails(
     presentSound: true,
     presentBadge: true,
     presentAlert: true,
@@ -63,7 +63,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     final flnp = FlutterLocalNotificationsPlugin();
     return flnp.initialize(
       InitializationSettings(
-        iOS: IOSInitializationSettings(),
+        iOS: DarwinInitializationSettings(),
         android: AndroidInitializationSettings('icon'),
       ),
     ).then((_) => 
@@ -76,7 +76,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           iOS: iosChannelSpecifics,
           android: androidChannelSpecifics
         ),
-        androidAllowWhileIdle: true,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
       )
     ).then((value) => loadNotification());
@@ -92,6 +92,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF1E3A8A),
+        foregroundColor: Colors.white,
         title: const Text('通知'),
         toolbarHeight: 40,
       ),
@@ -111,7 +113,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 child: OutlinedButton(
                   child: Text('チョーゼバ予定をチェック'),
                   style: OutlinedButton.styleFrom(
-                    primary: Colors.green,
+                    foregroundColor: Colors.green,
                   ),
                   onPressed: () {
                     loadNotification();
@@ -129,7 +131,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     notify(60, 0);
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blue,
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
                     elevation: 16,
                   ),
                   child: Text('1分後にチョーゼバ'),
@@ -146,7 +149,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     notify(180, 1);
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.amber,
+                    backgroundColor: Colors.amber,
+                    foregroundColor: Colors.white,
                     elevation: 16,
                   ),
                   child: Text('3分後にチョーゼバ'),
@@ -163,7 +167,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     notify(300, 2);
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blueGrey,
+                    backgroundColor: Colors.blueGrey,
+                    foregroundColor: Colors.white,
                     elevation: 16,
                   ),
                   child: Text('5分後にチョーゼバ'),
@@ -180,7 +185,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     notify(600, 3);
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.orange,
+                    backgroundColor: Colors.orange,
+                    foregroundColor: Colors.white,
                     elevation: 16,
                   ),
                   child: Text('10分後にチョーゼバ'),
@@ -195,7 +201,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   cancelNotification();
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.red,
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
                   elevation: 16,
                 ),
                 child: Text('チョーゼバをキャンセル'),

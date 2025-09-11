@@ -181,6 +181,8 @@ class _SpeechScreenState extends State<SpeechScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF1E3A8A),
+        foregroundColor: Colors.white, 
         title: !_searchBoolean ? Text('議会発言一覧') : _searchTextField(),
         toolbarHeight: 40,
         actions: !_searchBoolean?

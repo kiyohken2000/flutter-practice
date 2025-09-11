@@ -16,7 +16,7 @@ class ChaseScreen extends StatefulWidget {
 
 class _ChaseScreenState extends State<ChaseScreen> {
   var traceData = <String, dynamic>{};
-  late GoogleMapController _controller;
+  GoogleMapController? _controller;
   String updated_at = '';
   List<dynamic> articlesList = [];
   final Set<Marker> markers = new Set();
@@ -79,6 +79,8 @@ class _ChaseScreenState extends State<ChaseScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF1E3A8A),
+        foregroundColor: Colors.white,
         title: Text(updated_at + '更新'),
         toolbarHeight: 40,
       ),

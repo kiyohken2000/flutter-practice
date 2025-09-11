@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:flutter/services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../constants/firebase_constants.dart';
 
 class ShowAlertDialog extends StatelessWidget {
   final String message;
@@ -131,7 +131,7 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   void loadGalery() async {
-    final docRef = FirebaseFirestore.instance.collection('galery').doc('7Un7h8FMiveCWJzp4mLX'); // DocumentReference
+    final docRef = FirebaseFirestore.instance.collection('galery').doc(FirebaseConstants.galeryDocumentId); // DocumentReference
     final docSnapshot = await docRef.get(); // DocumentSnapshot
     final data = docSnapshot.exists ? docSnapshot.data() : null; // `data()`で中身を取り出す
     setState(() {
@@ -161,6 +161,8 @@ class _AccountScreenState extends State<AccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF1E3A8A),
+        foregroundColor: Colors.white,
         title: const Text('アカウント'),
         toolbarHeight: 40,
       ),
@@ -314,7 +316,7 @@ class _AccountScreenState extends State<AccountScreen> {
                     return Column(
                       children: [
                         ListTile(
-                          leading: GFAvatar(
+                          leading: CircleAvatar(
                             backgroundImage: CachedNetworkImageProvider("https://kiyohken2000.web.fc2.com/" + galeryRef + "/33.jpg"),
                           ),
                           title: Text('安倍晋三'),

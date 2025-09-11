@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'photoview.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../constants/firebase_constants.dart';
 
 class GaleryScreen extends StatefulWidget {
 
@@ -33,7 +34,7 @@ class _GaleryScreenState extends State<GaleryScreen> {
   bool isReverse = false;
 
   void loadGalery() async {
-    final docRef = FirebaseFirestore.instance.collection('galery').doc('7Un7h8FMiveCWJzp4mLX'); // DocumentReference
+    final docRef = FirebaseFirestore.instance.collection('galery').doc(FirebaseConstants.galeryDocumentId); // DocumentReference
     final docSnapshot = await docRef.get(); // DocumentSnapshot
     final data = docSnapshot.exists ? docSnapshot.data() : null; // `data()`で中身を取り出す
     setState(() {
@@ -346,6 +347,8 @@ class _GaleryScreenState extends State<GaleryScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF1E3A8A),
+        foregroundColor: Colors.white,
         title: _headerTitle(),
         toolbarHeight: 40,
         actions: [

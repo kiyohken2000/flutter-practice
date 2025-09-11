@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'screens/account.dart';
 import 'screens/speech.dart';
@@ -46,7 +45,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     GaleryScreen(),
     AccountScreen(),
     NotificationScreen(),
-    ChaseScreen(),
+    // ChaseScreen(),
   ];
 
   int _selectedIndex = 0;
@@ -69,7 +68,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           BottomNavigationBarItem(icon: Icon(Icons.image_aspect_ratio), label: 'ギャラリー'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'アカウント'),
           BottomNavigationBarItem(icon: Icon(Icons.notifications), label: '通知'),
-          BottomNavigationBarItem(icon: Icon(Icons.location_searching), label: '追跡'),
+          // BottomNavigationBarItem(icon: Icon(Icons.location_searching), label: '追跡'),
         ],
         type: BottomNavigationBarType.fixed,
       )

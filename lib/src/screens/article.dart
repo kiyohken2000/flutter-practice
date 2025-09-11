@@ -50,6 +50,8 @@ class _ArticleScreenState extends State<ArticleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF1E3A8A),
+        foregroundColor: Colors.white,
         title: Text(widget.title),
         toolbarHeight: 40,
       ),
@@ -117,7 +119,7 @@ class _ArticleScreenState extends State<ArticleScreen> {
               backgroundColor: Colors.greenAccent,
               onPressed: () async {
                 String url = Uri.encodeFull(widget.speechUrl);
-                await launch(url);
+                await launchUrl(Uri.parse(url));
               },
             ),
           ),

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'dart:typed_data';
 import 'package:dio/dio.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:gal/gal.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -137,23 +136,20 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
       var newId = uuid.v4();
       var response = await Dio()
         .get(image, options: Options(responseType: ResponseType.bytes));
-      final result = await ImageGallerySaver.saveImage(
+      await Gal.putImageBytes(
         Uint8List.fromList(response.data),
-        quality: 100,
         name: "messageImage${newId}");
 
-      if (result.containsKey('isSuccess')) {
-        this.infoMessage = '写真の保存に成功しました';
-        Fluttertoast.showToast(
-          msg: '保存しました',
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 16.0
-        );
-      }
+      this.infoMessage = '写真の保存に成功しました';
+      Fluttertoast.showToast(
+        msg: '保存しました',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0
+      );
     } catch (e) {
       this.infoMessage = '保存に失敗しました';
       Fluttertoast.showToast(msg: '保存に失敗しました');
@@ -225,6 +221,7 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
       child: Icon(Icons.edit),
       heroTag: "tag",
       backgroundColor: Colors.deepPurple,
+      foregroundColor: Colors.white,
       onPressed: () {
         showDialog<void>(
         context: context,
@@ -290,6 +287,8 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF1E3A8A),
+        foregroundColor: Colors.white,
         title: Text('写真'),
         toolbarHeight: 40,
         actions: _isTagView?[_hideTagButton()]:[_showTagButton()],

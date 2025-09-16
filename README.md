@@ -6,7 +6,10 @@ cd ios
 arch -x86_64 pod install
 flutter devices
 flutter run -d emulator-5554
-flutter run -d A8858004-0DA4-43F6-AEDF-FA7A10106928
+flutter run -d 99B63CA4-92CD-4DBA-8556-A0CB22181148
+flutter run -d 4752E450-E5AA-42EB-A0A1-6F6EDBEB9CCF
+flutter run -d 71661446-3BA3-41CC-A936-3C55C27415CF
+flutter run -d 5CA85EF4-B7AA-46E1-B8B2-08A6370A07A9
 ```
 
 ```

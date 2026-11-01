@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
+import '../constants/firebase_constants.dart';
 
 class AddTagDialog extends StatefulWidget {
   final int currentIndex;
@@ -127,6 +128,8 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
   List tags = [];
   bool _isTagView = true;
 
+  bool get _isTagEnabled => widget.galeryRef != FirebaseConstants.appStoreGaleryRef;
+
   void _saveImage({image}) async {
     try {
       setState(() {
@@ -162,6 +165,7 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
   }
 
   void _getTags(_currentIndex) async {
+    if (!_isTagEnabled) return;
     String idx = _currentIndex.toString();
     DocumentReference documentRef = await FirebaseFirestore.instance.collection('photos').doc(idx);
     final docSnapshop = await documentRef.get();
@@ -235,7 +239,7 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
   }
 
   Widget _tagChips() {
-    if(tags.length == 0 || !_isTagView) {
+    if(!_isTagEnabled || tags.length == 0 || !_isTagView) {
       return Wrap();
     } else {
       return Wrap(
@@ -291,7 +295,7 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
         foregroundColor: Colors.white,
         title: Text('写真'),
         toolbarHeight: 40,
-        actions: _isTagView?[_hideTagButton()]:[_showTagButton()],
+        actions: !_isTagEnabled ? [] : _isTagView?[_hideTagButton()]:[_showTagButton()],
       ),
       body: Stack(
         children: <Widget>[
@@ -340,10 +344,11 @@ class _PhotoviewScreenState extends State<PhotoviewScreen> {
             padding: const EdgeInsets.only(right: 10),
             child: !isLoading ? _saveButton() : _isLoading(),
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: _addTag(),
-          )
+          if (_isTagEnabled)
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: _addTag(),
+            )
         ],
       )
     );

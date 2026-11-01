@@ -4,6 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../constants/firebase_constants.dart';
 
+// タブ切り替えのたびに photos コレクションを全件取得しないよう、アプリ起動中は使い回す
+List<Map<String, dynamic>>? _cachedCountedTags;
+Map<String, List<dynamic>>? _cachedTagIndex;
+
+// 1つの Wrap に入れるチップ数。ListView.builder で表示範囲の分だけ組み立てる
+const int _tagChunkSize = 60;
+
 class GaleryScreen extends StatefulWidget {
 
   const GaleryScreen({
@@ -19,21 +26,21 @@ class _GaleryScreenState extends State<GaleryScreen> {
   int photoCount = 0;
   String galeryRef = 'appstore';
   List photoList = [];
-  List tagList = [];
   List filteredPhotoList = [];
-  List<dynamic> documentList = [];
   bool _searchBoolean = false;
   bool _keywordBoolean = false;
   String selectedTag = '';
   bool tagSelected = false;
-  List filteredPhotos = [];
   List<Map<String, dynamic>> _searchTagList = [];
   String keyword = '';
-  var tagMap = <dynamic, dynamic>{};
+  // タグ名 → そのタグが付いた写真の id 一覧
+  Map<String, List<dynamic>> tagIndex = {};
   List<Map<String, dynamic>> addCountedTags = [];
   bool isReverse = false;
 
-  void loadGalery() async {
+  bool get _isTagEnabled => galeryRef != FirebaseConstants.appStoreGaleryRef;
+
+  Future<void> loadGalery() async {
     final docRef = FirebaseFirestore.instance.collection('galery').doc(FirebaseConstants.galeryDocumentId); // DocumentReference
     final docSnapshot = await docRef.get(); // DocumentSnapshot
     final data = docSnapshot.exists ? docSnapshot.data() : null; // `data()`で中身を取り出す
@@ -53,42 +60,36 @@ class _GaleryScreenState extends State<GaleryScreen> {
   }
 
   void getTags() async{
-    final snapshot = await FirebaseFirestore.instance.collection('photos').get();
-    var photoArray = [];
-    var tagArray = [];
-    snapshot.docs.forEach((element) {
-      photoArray.add(element.data());
-      tagArray.addAll(element.data()['tags']);
-    });
-    var map = Map();
-    tagArray.forEach((element) {
-      if(!map.containsKey(element)) {
-        map[element] = 1;
-      } else {
-        map[element] +=1;
-      }
-    });
+    if (_cachedCountedTags == null || _cachedTagIndex == null) {
+      final snapshot = await FirebaseFirestore.instance.collection('photos').get();
+      final index = <String, List<dynamic>>{};
+      snapshot.docs.forEach((element) {
+        final data = element.data();
+        for (final tag in data['tags']) {
+          index.putIfAbsent(tag.toString(), () => []).add(data['id']);
+        }
+      });
+      final List<Map<String, dynamic>> addCount = index.entries.map((e) => <String, dynamic>{
+        'label': e.key,
+        'count': e.value.length
+      }).toList();
+      addCount.sort((a,b) => b['count'].compareTo(a['count']));
+      _cachedTagIndex = index;
+      _cachedCountedTags = addCount;
+    }
+    if (!mounted) return;
     setState(() {
-      documentList = photoArray;
-      tagList = tagArray.toSet().toList();
-      tagMap = map;
-    });
-    var tags = tagArray.toSet().toList();
-    final List<Map<String, dynamic>> addCount = tags.map((e) => {
-      'label': e,
-      'count': tagMap[e]
-    }).toList();
-    addCount.sort((a,b) => b['count'].compareTo(a['count']));
-    setState(() {
-      addCountedTags = addCount;
+      tagIndex = _cachedTagIndex!;
+      addCountedTags = _cachedCountedTags!;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    loadGalery();
-    getTags();
+    loadGalery().then((_) {
+      if (_isTagEnabled) getTags();
+    });
   }
 
   Widget _tagButton() {
@@ -120,18 +121,13 @@ class _GaleryScreenState extends State<GaleryScreen> {
   }
 
   void onSelect(String tag) {
+    final ids = tagIndex[tag] ?? [];
     setState(() {
       selectedTag = tag;
       tagSelected = true;
-    });
-    var array = [];
-    documentList.forEach((element) {
-      if(element['tags'].contains(tag)) {
-        array.add(element['id']);
-      }
-      setState(() {
-        filteredPhotos = array;
-      });
+      filteredPhotoList = ids.map((imageIndex) =>
+        "https://kiyohken2000.web.fc2.com/" + galeryRef + "/" + imageIndex.toString() + ".jpg"
+      ).toList();
     });
   }
 
@@ -143,64 +139,36 @@ class _GaleryScreenState extends State<GaleryScreen> {
   }
 
   Widget _tagChips() {
-    if(tagList.length == 0 || !_searchBoolean ) {
+    if(addCountedTags.length == 0 || !_searchBoolean ) {
       return Wrap();
-    } else if(_searchTagList.length != 0 || keyword.length != 0) {
-      return ListView(
-       primary: true,
-       shrinkWrap: true,
-       children: <Widget>[
-         Wrap(
-           spacing: 4.0,
-           runSpacing: 0.0,
-           children: List<Widget>.generate(
-             _searchTagList.length, // place the length of the array here
-             (int index) {
-                return ActionChip(
-                  label: Text(_searchTagList[index]['label'] + '(' + _searchTagList[index]['count'].toString() + ')'),
-                  onPressed: () {
-                    onSelect(_searchTagList[index]['label']);
-                  },
-                );
-             }
-           ).toList(),
-         ),
-       ],
-     );
-    } else {
-      return ListView(
-       primary: true,
-       shrinkWrap: true,
-       children: <Widget>[
-         Wrap(
-           spacing: 4.0,
-           runSpacing: 0.0,
-           children: List<Widget>.generate(
-             addCountedTags.length, // place the length of the array here
-             (int index) {
-               return ActionChip(
-                 label: Text(addCountedTags[index]['label'] + '(' + addCountedTags[index]['count'].toString() + ')'),
-                 onPressed: () {
-                  onSelect(addCountedTags[index]['label']);
-                 },
-               );
-             }
-           ).toList(),
-         ),
-       ],
-     );
     }
+    final tags = (_searchTagList.length != 0 || keyword.length != 0) ? _searchTagList : addCountedTags;
+    // 全チップを1つの Wrap に入れると画面外の分まで一度に組み立てるため、
+    // 一定数ずつの Wrap に分けて見えている範囲だけ組み立てる
+    final chunkCount = (tags.length / _tagChunkSize).ceil();
+    return ListView.builder(
+      primary: true,
+      itemCount: chunkCount,
+      itemBuilder: (context, chunkIndex) {
+        final start = chunkIndex * _tagChunkSize;
+        final end = (start + _tagChunkSize < tags.length) ? start + _tagChunkSize : tags.length;
+        return Wrap(
+          spacing: 4.0,
+          runSpacing: 0.0,
+          children: tags.sublist(start, end).map((tag) {
+            return ActionChip(
+              label: Text(tag['label'] + '(' + tag['count'].toString() + ')'),
+              onPressed: () {
+                onSelect(tag['label']);
+              },
+            );
+          }).toList(),
+        );
+      },
+    );
   }
 
   Widget _filteredPhotos() {
-    var photoArray = [];
-    filteredPhotos.forEach((imageIndex) {
-      var image = "https://kiyohken2000.web.fc2.com/" + galeryRef + "/" + imageIndex.toString() + ".jpg";
-      photoArray.add(image);
-    },);
-    setState(() {
-      filteredPhotoList = photoArray;
-    });
     return Container(
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -352,7 +320,7 @@ class _GaleryScreenState extends State<GaleryScreen> {
         title: _headerTitle(),
         toolbarHeight: 40,
         actions: [
-          _tagButton(),
+          if (_isTagEnabled) _tagButton(),
         ],
       ),
       body: _imageView(),

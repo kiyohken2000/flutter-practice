@@ -46,7 +46,7 @@ dependencies:
   timezone: ^0.9.4
   gal: ^2.3.0
   dio: ^5.7.0
-  fluttertoast: ^8.2.8
+  fluttertoast: ^10.0.2
   month_picker_dialog: ^6.5.0
   flutter_localizations:      # 行追加
     sdk: flutter              # 行追加
